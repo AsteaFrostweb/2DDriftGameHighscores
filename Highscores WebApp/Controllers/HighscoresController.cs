@@ -59,31 +59,64 @@ public class HighscoresController : Controller
     }
 
     [HttpGet]
-	public IActionResult GetHighScores()
-	{
-		
-		var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);		
+    public IActionResult GetHighScores(string MapName)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-		var userHighScores = _context.Highscores.Where(h => h.Player_Id == userId).ToList();
-		return Ok(userHighScores);
-	}
+
+        var map = _context.Maps.FirstOrDefault(m => m.Name == MapName);
+        int map_id;
+        if (map == null)
+        {
+            return BadRequest("Map information is missing.");
+        }
+        else
+        {
+            map_id = map.Id;
+        }            
+        
+       
+        var HighScoresQuery = _context.Highscores.Where(h => h.Map_Id == map_id);
+        
+
+        var HighScores = HighScoresQuery.ToList();
+
+        List<HighscoreGetModel> returnhighscores = new List<HighscoreGetModel>();
+        foreach (var highscore in HighScoresQuery)
+        {
+            returnhighscores.Add(highscore.AsGetModel(_context.Maps.FirstOrDefault(m => m.Id == highscore.Map_Id).Name, _context.Users.FirstOrDefault(u => u.Id == highscore.Player_Id).UserName));
+        }
+
+        return Ok(returnhighscores);
+    }
 
     [Authorize]
     [HttpPost]
     public IActionResult UpdateHighScore(HighscoreUpdateModel model)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var map = _context.Maps.FirstOrDefault(m => m.Name == model.MapName);
+        int map_id;
+        if (map == null)
+        {
+            return BadRequest("Map information is missing.");
+        }
+        else
+        {
+            map_id = map.Id;
+        }
 
         // Check if the user has an existing high score for the specified map
-        var existingHighScore = _context.Highscores.FirstOrDefault(h => h.Player_Id == userId && h.Map_Id == model.Map_Id);
-
+        var existingHighScore = _context.Highscores.FirstOrDefault(h => h.Player_Id == userId && h.Map_Id == map_id);
+     
+      
         if (existingHighScore == null)
         {
             // If no existing high score found, create a new one
             var newHighScore = new HighscoresModel
             {
                 Player_Id = userId,
-                Map_Id = model.Map_Id,
+                Map_Id = map_id,
                 Fastest_Lap = model.FastestLap,
                 Best_Combo_Score = model.BestComboScore,
                 Best_Combo_Time = model.BestComboTime
