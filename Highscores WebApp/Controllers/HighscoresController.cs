@@ -59,6 +59,7 @@ public class HighscoresController : Controller
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public IActionResult GetHighScores(string MapName)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
