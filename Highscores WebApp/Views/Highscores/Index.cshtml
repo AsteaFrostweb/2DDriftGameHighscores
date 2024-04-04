@@ -34,11 +34,11 @@
                         <tr>
                             <td>@(Model.Users.FirstOrDefault(u => u.Id == highscore.Player_Id)?.UserName)</td>
                             <td>@(Model.Maps.FirstOrDefault(m => m.Id == highscore.Map_Id)?.Name)</td>
-                            <td>@TimeSpan.FromSeconds(highscore.Fastest_Lap).ToString(@"hh\:mm\:ss\:fff")</td>
+                            <td>@TimeSpan.FromSeconds(highscore.Fastest_Lap).ToString(@"hh\:mm\:ss\.fff")</td>
                             <td>@highscore.Best_Combo_Score</td>
-                            <td>@TimeSpan.FromSeconds(highscore.Best_Combo_Time).ToString(@"hh\:mm\:ss\:fff")</td>
+                            <td>@TimeSpan.FromSeconds(highscore.Best_Combo_Time).ToString(@"hh\:mm\:ss\.fff")</td>
                             <div class="d-none">
-                                {Name:@(Model.Users.FirstOrDefault(u => u.Id == highscore.Player_Id)?.UserName),Map:@(Model.Maps.FirstOrDefault(m => m.Id == highscore.Map_Id)?.Name),Fastest_Lap:@TimeSpan.FromSeconds(highscore.Fastest_Lap).ToString(@"hh\:mm\:ss\:fff"),BestComboScore:@highscore.Best_Combo_Score,Best_Combo_Time:@TimeSpan.FromSeconds(highscore.Best_Combo_Time).ToString(@"hh\:mm\:ss\:fff")}
+                                {Name:@(Model.Users.FirstOrDefault(u => u.Id == highscore.Player_Id)?.UserName),Map:@(Model.Maps.FirstOrDefault(m => m.Id == highscore.Map_Id)?.Name),Fastest_Lap:@TimeSpan.FromSeconds(highscore.Fastest_Lap).ToString(@"hh\:mm\:ss\.fff"),BestComboScore:@highscore.Best_Combo_Score,Best_Combo_Time:@TimeSpan.FromSeconds(highscore.Best_Combo_Time).ToString(@"hh\:mm\:ss\.fff")}
                             </div>
                         </tr>
                     }

@@ -101,9 +101,18 @@ public class HighscoresController : Controller
             List<HighscoresModel> highscores = new List<HighscoresModel>();
             for (int i = 0; i < ToRank; i++)
             {
-                if (!highscores.Contains(fastest_combos[i])) highscores.Add(fastest_combos[i]);
-                if (!highscores.Contains(longest_combos[i])) highscores.Add(longest_combos[i]);
-                if (!highscores.Contains(best_combo_scores[i])) highscores.Add(best_combo_scores[i]);
+                if (i < fastest_combos.Count) 
+                {
+                    if (!highscores.Contains(fastest_combos[i])) highscores.Add(fastest_combos[i]);
+                }
+                if (i < longest_combos.Count)
+                {
+                    if (!highscores.Contains(longest_combos[i])) highscores.Add(longest_combos[i]);
+                }
+                if (i < best_combo_scores.Count) 
+                {
+                    if (!highscores.Contains(best_combo_scores[i])) highscores.Add(best_combo_scores[i]);
+                }              
             }
 
             List<HighscoreGetModel> get_highscores = new List<HighscoreGetModel>();
